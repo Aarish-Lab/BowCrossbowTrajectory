@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "bowcrossbowtrajectory",
+  "version": "${version}",
+  "name": "Bow & Crossbow Trajectory",
+  "description": "Client-side bow, crossbow and Multishot trajectory prediction with collision colours. Configure in Mod Menu.",
+  "authors": ["BowCrossbowTrajectory"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.bowcrossbow.trajectory.BowCrossbowTrajectoryClient"],
+    "modmenu": ["com.bowcrossbow.trajectory.ModMenuIntegration"]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "26.1.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": { "modmenu": "*" }
+}
