@@ -28,7 +28,8 @@ public final class ConfigScreen extends Screen {
     @Override
     protected void init() {
         int cx = this.width / 2;
-        addRenderableWidget(new StringWidget(cx - 150, 8, 300, 12, this.title, this.font).alignCenter());
+        int titleWidth = this.font.width("Bow & Crossbow Trajectory");
+        addRenderableWidget(new StringWidget(cx - titleWidth / 2, 8, titleWidth, 12, this.title, this.font));
         for (int i = 0; i < PAGES.length; i++) {
             final int page = i;
             Button b = Button.builder(Component.literal(PAGES[i]), btn -> { lastPage = page; rebuildWidgets(); })

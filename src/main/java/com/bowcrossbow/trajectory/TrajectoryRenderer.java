@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.phys.Vec3;
 
@@ -15,7 +13,7 @@ public final class TrajectoryRenderer {
     private TrajectoryRenderer() {}
 
     public static void register() {
-        LevelRenderEvents.AFTER_ENTITIES.register(TrajectoryRenderer::render);
+        LevelRenderEvents.BEFORE_TRANSLUCENT_TERRAIN.register(TrajectoryRenderer::render);
     }
 
     private static void render(LevelRenderContext ctx) {
@@ -25,11 +23,9 @@ public final class TrajectoryRenderer {
         if (!TrajectoryManager.active) return;
 
         ModConfiguration cfg = ModConfiguration.get();
-        Vec3 cam = mc.gameRenderer.getMainCamera().position();
+        Vec3 cam = ctx.levelState().cameraRenderState.pos;
         PoseStack.Pose pose = ctx.poseStack().last();
-        MultiBufferSource src = ctx.bufferSource();
-        RenderType type = RenderTypes.lines();
-        VertexConsumer vc = src.getBuffer(type);
+        VertexConsumer vc = ctx.bufferSource().getBuffer(RenderTypes.lines());
 
         for (int a = 0; a < TrajectoryManager.arrowCount; a++) {
             TrajectoryCalculator.Path p = TrajectoryManager.PATHS[a];
@@ -44,7 +40,6 @@ public final class TrajectoryRenderer {
                 line(vc, pose, p.hitX, p.hitY, p.hitZ - s, p.hitX, p.hitY, p.hitZ + s, cam, argb, w);
             }
         }
-        if (src instanceof MultiBufferSource.BufferSource bs) bs.endBatch(type);
     }
 
     private static int colourFor(ModConfiguration c, int hit) {

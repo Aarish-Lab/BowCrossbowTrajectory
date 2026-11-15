@@ -28,7 +28,7 @@ public final class KeybindManager {
             cfg.enabled = !cfg.enabled;
             cfg.save();
             if (mc.player != null) {
-                mc.gui.getChat().addMessage(Component.literal("Trajectory prediction: " + (cfg.enabled ? "ON" : "OFF")));
+                mc.gui.setOverlayMessage(Component.literal("Trajectory prediction: " + (cfg.enabled ? "ON" : "OFF")), true);
             }
         }
     }
